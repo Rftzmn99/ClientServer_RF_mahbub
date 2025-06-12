@@ -25,7 +25,7 @@ The project is organized as follows:
     server.py              # gRPC server code
   /client
     client.py              # gRPC client code
-  Dockerfile               # Docker configuration (if      Dockerized)
+  Dockerfile               # Docker configuration (if Dockerized)
   docker-compose.yml       # Docker Compose configuration (if using multiple services)
   requirements.txt         # Python dependencies
   README.md                # Project documentation
