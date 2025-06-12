@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package rfcontrol; // Package name
+
+// The RF control service definition.
+service RFControl {
+    // Unary RPC for setting RF settings
+    rpc SetRFSettings (RFConfig) returns (RFResponse);
+
+    // Server Streaming RPC: Continuously monitor the device status (e.g., ongoing updates).
+    rpc MonitorDeviceStatus (DeviceStatusRequest) returns (stream DeviceStatusReply);
+
+    // Client Streaming RPC: Send multiple RF configuration requests
+    rpc BulkSetRFSettings (stream RFConfig) returns (DelayedResponse);
+
+    // Both Streaming RPC: Exchange ongoing RF configurations and device status
+    rpc InteractingRFControl (stream RFConfig) returns (stream RFResponse);
+}
+
+// The RFConfig message contains the configuration data for RF settings.
+message RFConfig {
+    string frequency = 1;  // Frequency setting (in Hz)
+    string gain = 2;       // Gain setting (in dB)
+    string device_id = 3;  // Device ID
+}
+
+// The RFResponse message contains the response status and any device-specific message.
+message RFResponse {
+    string status = 1;     // Status of the RF operation (Success/Failure)
+    string message = 2;    // Additional message (e.g., device status)
+}
+
+// The DeviceStatusRequest message asks for current device status information.
+message DeviceStatusRequest {
+    string device_id = 1;  // Device ID for querying status
+}
+
+// The DeviceStatusReply message contains the response with device status.
+message DeviceStatusReply {
+    string status = 1;     // Device status (e.g., "Active", "Idle")
+    string message = 2;    // Status message
+}
+
+// DelayedResponse is returned when there are multiple requests in the BulkSetRFSettings RPC.
+message DelayedResponse {
+    string status = 1;     // Status of the bulk operation
+    repeated RFConfig request = 2; // The list of RF configurations
+}
