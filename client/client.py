@@ -3,7 +3,6 @@ import rfcontrol_pb2_grpc
 import time
 import grpc
 
-# Function to get client stream requests for Bulk RF Settings
 def get_client_stream_requests():
     while True:
         frequency = input("Please enter frequency (or nothing to stop chatting): ")
